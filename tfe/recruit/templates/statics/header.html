@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block metas %} 
+    <title> Accueil </title>
+    <link rel="stylesheet" href="{% static 'style.css' %}"> 
+    {% endblock %}
+    <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    
+</head>
+<body>
+    <!-- Début du Header -->
+    <header class="d-flex align-items-center text-white py-2">
+        <!-- Logo de gauche -->
+        <div class="logo-container1 d-flex align-items-center justify-content-center bg-white me-3" style="height: 73px; width: 73px;">
+            <img src="{% static 'img/icons/0 2.png' %}" alt="Logo gauche" class="img-fluid">
+        </div>
+        <!-- Texte principal -->
+        <div class="text-container flex-grow-1">
+            <h1 class="m-0 fw-bold">INSTI</h1>
+            <p class="m-0">Institut Nationale Supérieur de Technologie Industrielle <br /> de Lokossa</p>
+        </div>
+        <!-- Liens à droite -->
+        <div class="links d-flex align-items-center">
+            <a href="#" class="text-white d-flex align-items-center me-3">
+                <img src="{% static 'img/icons/info-circle-fill.svg' %}" alt="Info" class="icon-white me-1" style="width: 20px; height: 20px;" class="me-1"> Accès rapide
+            </a>
+            <span class="text-white">|</span>
+            <a href="#" class="text-white d-flex align-items-center mx-3">
+                <img src="{% static 'img/icons/snow3.svg' %}" alt="Observatoire" class="icon-white me-1" style="width: 20px; height: 20px;" class="me-1"> Observatoire
+            </a>
+            <span class="text-white">|</span>
+            <a href="#" class="text-white d-flex align-items-center ms-3">
+                <img src="{% static 'img/icons/person-fill.svg' %}" alt="Person" class="icon-white me-1" style="width: 20px; height: 20px;" class="me-1"> Nous écrire
+            </a>
+        </div>
+        <!-- Logo de droite -->
+        <div class="logo-container1 d-flex align-items-center justify-content-center bg-white ms-3" style="height: 73px; width: 73px;">
+            <img src="{% static 'img/icons/logoINSTI 1.png' %}" alt="Logo droite" class="img-fluid">
+        </div>
+    </header>
+    <!-- Fin du Header -->
+</body>

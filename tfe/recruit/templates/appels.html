@@ -1,0 +1,31 @@
+{% extends "statics.html" %}
+
+{% load static %}
+{% block metas %} 
+<title> Appels </title>
+<link rel="stylesheet" href="{% static 'style.css' %}"> 
+<link rel="stylesheet" href="{% static 'appels.css' %}">
+{% endblock %}
+
+{% block contenu %}
+<div class="lol">
+  <div class='ok'> 
+    <h2> Postes ouverts </h2>
+
+    <div class="conteneur">
+      {% for app in appels %} 
+      <div class='box'> 
+        <h2>  {{ app.titre }} </h2>
+        <p>  {{ app.description }} </p>
+        <p> Missions : {{ app.missions }} </p> 
+        <h4> Clôture {{ app.date_fin }} </h4> 
+        <a href="{% url 'recruit:candidater' appel_id=app.id %}"> Postuler </a>
+      </div>
+      {% empty %}
+        <div>  Pas d'appels à candidatures en cours  </div>  
+      {% endfor %}   
+    </div>   
+  </div>
+</div>
+{% endblock %}
+

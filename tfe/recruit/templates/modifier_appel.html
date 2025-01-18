@@ -1,0 +1,17 @@
+{% extends "register.html" %}
+{% load static %}
+
+{% block contenu %}
+
+  <form class="form-control" method="POST">
+    {% comment %} <h2> Lancer un appel </h2> {% endcomment %}
+
+    {% csrf_token %}
+    {% for field in form %}
+      {{ field.label_tag }} {{ field }}
+    {% endfor %}
+    <input type="submit" value='Envoyer' class="appel">
+  </form>
+  {{ form.errors }}
+ 
+{% endblock %}

@@ -1,0 +1,196 @@
+header {
+  height: 73px;
+  /* Hauteur uniforme pour tout le header */
+  background-color: #0D4293;
+  /* Couleur de fond */
+  display: flex;
+  /* Utilisation de Flexbox pour aligner les éléments */
+  align-items: center;
+  /* Centre les éléments verticalement */
+  justify-content: space-between;
+  /* Espace équitable entre les éléments */
+  padding: 0 15px;
+  /* Ajoute un espace intérieur à gauche et à droite */
+  box-sizing: border-box;
+  /* Inclut le padding dans la hauteur/largeur totale */
+}
+
+.logo-container .logo-container1 {
+  height: 73px;
+  /* Ajuste la hauteur pour correspondre au header */
+  width: 73px;
+  /* Assure une largeur identique */
+  background-color: white;
+  /* Fond blanc pour le conteneur */
+  display: flex;
+  /* Centre le logo à l'intérieur */
+  align-items: center;
+  justify-content: center;
+  margin-left: 10px;
+  /* Décale un peu le logo du bord gauche */
+  margin-right: 10px;
+  /* Décale un peu le logo du bord droit (si nécessaire) */
+}
+
+.logo-container1 {
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
+}
+
+.logo-container img .logo-container1 img {
+  max-width: 90%;
+  /* Empêche le logo de dépasser */
+  max-height: 90%;
+  /* Ajuste la taille pour qu'elle reste proportionnelle */
+  object-fit: contain;
+  /* Garde les proportions de l'image */
+}
+
+.text-container h1 {
+  font-size: 1.2rem;
+  /* Ajuste la taille du texte principal */
+  margin: 0;
+  /* Enlève les marges par défaut */
+}
+
+.text-container p {
+  font-size: 0.7rem;
+  /* Ajuste la taille du sous-titre */
+  margin: 0;
+  /* Enlève les marges par défaut */
+  margin-top: 5px;
+  /* Ajoute un petit espace entre les lignes */
+}
+
+.links {
+  display: flex;
+  align-items: center;
+  /* Centre les liens verticalement */
+}
+
+.links a {
+  text-decoration: none;
+  font-size: 0.9rem;
+  color: white;
+  /* Assure une couleur blanche */
+  margin: 0 10px;
+  /* Ajoute de l'espace entre les liens */
+}
+
+.links a:hover {
+  text-decoration: underline;
+  /* Donne un effet au survol */
+}
+
+/* Ajout d'espacement horizontal entre les liens */
+.nav-item {
+  margin: 0 20px;
+  /* Ajoute de l'espace à gauche et à droite des liens */
+}
+
+/* Style de la navbar */
+.custom-navbar {
+  background-color: white;
+  padding: 0;
+  /* Enlève l'espacement vertical supplémentaire */
+}
+
+/* Style des liens de navigation */
+.nav-item .nav-link {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 15.85px;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  color: #0D4293;
+  padding: 15px 20px;
+  /* Ajuste l'espacement autour des liens */
+  transition: color 0.3s ease;
+  display: flex;
+  align-items: center;
+  /* Alignement vertical */
+  height: 80px;
+  /* Définit la hauteur pour s'aligner avec le logo */
+}
+
+.nav-item .nav-link:hover {
+  color: #0056b3;
+}
+
+/* Logo central */
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80px;
+  /* Même hauteur que les liens */
+  width: 227px;
+}
+
+
+/* Ajuste la hauteur globale de la navbar */
+.navbar-nav {
+  align-items: center;
+  /* Aligne tous les éléments au centre verticalement */
+}
+
+/* Responsiveness pour ajuster les espacements sur mobile */
+@media (max-width: 768px) {
+  .navbar-nav {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .nav-item {
+    margin: 10px 0;
+    /* Moins d'espace entre les liens sur mobile */
+  }
+}
+
+.custom-tainer h1 {
+  color: black;
+
+}
+
+footer {
+  background-color: #0D4293; /* Couleur principale */
+  color: white; /* Texte en blanc */
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+footer h5 {
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+footer a {
+  transition: color 0.3s ease;
+}
+
+footer a:hover {
+  color: #ffcc00; /* Change la couleur au survol */
+}
+
+footer img {
+  max-width: 100%;
+  height: auto;
+}
+
+.underline {
+  height: 2px; /* Hauteur du trait */
+  width: 400px; /* Largeur du trait */
+  background-color: white; /* Couleur du trait */
+  margin: 0 auto; /* Centrer */
+}
+
+.icon-white {
+  filter: invert(1) brightness(2); /* Rend les icônes blanches */
+}
+
+/* Optionnel : Ajoute un effet au survol */
+.icon-white:hover {
+  filter: invert(1) brightness(2.5);
+}
+

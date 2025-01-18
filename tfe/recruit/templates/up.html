@@ -1,0 +1,15 @@
+{% extends "register.html" %}
+{% load static %}
+
+{% block contenu %}
+  <h2> {{ app }} </h2>
+  
+  <form class="form-control" action="" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+     {% for field in form %}
+      {{ field.label_tag }} {{ field }}
+    {% endfor %}
+    <input type="submit" value='Envoyer'>
+  </form>
+    {{ form.errors }}
+{% endblock %}

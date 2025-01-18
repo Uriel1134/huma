@@ -1,0 +1,140 @@
+/* Variables globales */
+:root {
+  --primary-color: #6e90b8; /* Couleur principale : Bleu */
+  --secondary-color: #094aa0; /* Couleur secondaire : Vert */
+  --text-color: #333; /* Couleur du texte principal */
+  --text-muted: #777; /* Couleur du texte atténué */
+  --background-color: #f9f9f9; /* Couleur de fond */
+  --card-background: #ffffff; /* Couleur de fond de la carte */
+  --border-radius: 20px; /* Rayon des bords arrondis */
+  --box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Ombre de la carte */
+  --font-family: 'Poppins', sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: var(--font-family);
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  min-height: 100vh;
+}
+
+/* Conteneur principal */
+.conteneur {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+/* Carte de profil */
+.profile-card {
+  display: grid;
+  grid-template-columns: 1fr 2fr; /* Deux colonnes : image et contenu */
+  background-color: var(--card-background);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: var(--box-shadow);
+  width: 100%;
+  max-width: 800px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.profile-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+}
+
+/* Section image */
+.profile-image-section {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  color: #fff;
+}
+
+.profile-image-section img {
+  border-radius: 50%;
+  height: 150px;
+  width: 150px;
+  border: 5px solid rgba(255, 255, 255, 0.8);
+  margin-bottom: 1rem;
+}
+
+.profile-image-section h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.profile-image-section p {
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+/* Section d'informations */
+.profile-info-section {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.section-title {
+  font-weight: bold;
+  font-size: 1.5rem;
+  color: var(--primary-color);
+  border-bottom: 3px solid var(--secondary-color);
+  padding-bottom: 0.5rem;
+}
+
+.info-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.info-item {
+  flex: 1 1 45%; /* Deux colonnes flexibles */
+}
+
+.info-item span {
+  font-weight: bold;
+  color: var(--text-muted);
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.info-item p {
+  font-size: 1rem;
+  color: var(--text-color);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .profile-card {
+    grid-template-columns: 1fr; /* Une seule colonne sur mobile */
+  }
+
+  .profile-image-section {
+    padding: 1.5rem;
+  }
+
+  .profile-image-section img {
+    height: 120px;
+    width: 120px;
+  }
+
+  .profile-info-section {
+    padding: 1.5rem;
+  }
+}

@@ -1,0 +1,57 @@
+{% extends "dashboard.html" %}
+{% load static %}
+
+  {% block link %}   
+    <link rel="stylesheet" href="{% static 'profil.css' %}">
+  {% endblock %}
+
+  {% block contents %} 
+
+  {% if profil %}
+    <div class="conteneur"> 
+      <div class="profile-card">
+        <div class="profile-image-section">
+          <img src="https://via.placeholder.com/150" alt="Profil Image">
+          <p>{{ profil.prenom }} {{ profil.nom }}</p>
+          <p>Evaluateur</p> 
+        </div>
+      
+        <div class="profile-info-section">
+          <div>
+            <p class="section-title">Informations <a href="{% url 'recruit:update' %}"> <i class="fa-solid fa-pen" style="color:blue;"></i></a> </p>
+            <div class="info-group">
+              <div class="info-item">
+                <div class="font-bold">Email</div>
+                <div>{{ profil.email }}</div>
+              </div>
+              <div class="info-item">
+                <div class="font-bold">Téléphone</div>
+                <div>{{ profil.contact }}</div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <p class="section-title">Qualifs</p>
+            <div class="info-group">
+              <div class="info-item">
+                <div class="font-bold">Grade</div>
+                <div>{{ profil.grade }}</div>
+              </div>
+              <div class="info-item">
+                <div class="font-bold">Spécialité</div>
+                <div>{{ profil.spec }}</div>
+              </div>
+            </div>
+          </div>
+        </div>   
+      </div>
+    </div>
+  {% else %}
+    <p> Vous n'avez pas défini de profil <a style="color: #0072ff;" href="{% url 'recruit:profil_creation' %}">Creer Votre Profil </a> </p>
+
+  {% endif %}
+    
+     
+  {% endblock %}
+
+

@@ -1,0 +1,174 @@
+/* Global styles for the registration container */
+.registration-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f7f8fc;
+  padding: 20px;
+}
+
+/* Form styles */
+.registration-form {
+  background: #ffffff;
+  padding: 30px 40px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 100%;
+}
+
+.form-title {
+  margin-bottom: 20px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #333333;
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 14px;
+  color: #555555;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"],
+select,
+textarea {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 14px;
+  border: 1px solid #dddddd;
+  border-radius: 6px;
+  background-color: #f9f9f9;
+  outline: none;
+  transition: border-color 0.3s ease-in-out;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus,
+select:focus,
+textarea:focus {
+  border-color: #007bff;
+  background-color: #ffffff;
+}
+
+/* Submit button */
+.submit-button {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #ffffff;
+  background-color: #0c47a1;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.submit-button:hover {
+  background-color: #0d47a1
+}
+
+/* Footer styles */
+.form-footer {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.already-account {
+  font-size: 14px;
+  color: #666666;
+}
+
+.signin-link {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s ease-in-out;
+}
+
+.signin-link:hover {
+  color: #0056b3;
+}
+
+
+
+
+
+.input-with-icon {
+  position: relative;
+}
+
+.input-with-icon i {
+  position: absolute;
+  left: 10px; /* Positionne l'icône à gauche du champ */
+  top: 50%;
+  transform: translateY(-50%);
+  color: #007bff; /* Changez la couleur si nécessaire */
+  font-size: 16px; /* Taille de l'icône */
+}
+
+input[type="text"],
+input[type="password"] {
+  padding-left: 40px; /* Espace pour l'icône */
+}
+
+.submit-button {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #ffffff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.submit-button:hover {
+  background-color: #0056b3;
+}
+
+/* Container d'erreurs */
+.form-errors {
+  margin-top: 20px;
+  background-color: #ffe6e6; /* Fond rouge pâle */
+  border: 1px solid #ff4d4f; /* Bordure rouge */
+  padding: 15px;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+/* Liste d'erreurs */
+.form-errors ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Item d'erreur */
+.error-item {
+  color: #ff4d4f;
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+/* Icône de l'erreur */
+.error-item i {
+  color: #ff4d4f;
+  margin-right: 10px;
+  font-size: 18px;
+}

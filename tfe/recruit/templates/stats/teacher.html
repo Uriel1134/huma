@@ -1,0 +1,37 @@
+{% extends "dashboard.html" %}
+{% load static %}
+
+  {% block link %}   
+    <link rel="stylesheet" href="{% static "stats.css" %}">
+  {% endblock %}
+
+  
+  {% block contents %} 
+
+    <div class="table-container">
+      <div class="table-title"> Appels postulés </div>
+      <table>
+        <thead>
+          <tr>
+            <th> Appels </th>
+            <th> Fin </th>
+            <th> Statut </th>
+            <th> Décision </th>
+          </tr>
+        </thead>
+        
+        <tbody>
+          {% for can in candidatures %}
+          <tr>
+            <td class="project-name" > {{ can.appel }} </td>
+            <td> {{ can.appel.date_fin }} </td>
+            <td> {{ can.statut }}</td>
+            <td> <span class="status active"> {{ decisions|slice:forloop.counter|first }} </span>  </td>
+          </tr>
+          {% endfor %}
+
+        </tbody>
+      </table>
+    </div>
+    
+  {% endblock %}

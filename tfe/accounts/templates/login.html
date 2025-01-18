@@ -1,0 +1,26 @@
+{% extends "statics.html" %}
+
+{% block contenu %}
+<div class="registration-container">
+  <form method="POST" class="registration-form">
+    <h2 class="form-title">Login</h2>
+    {% csrf_token %}
+    {% for champ in form %}
+    <div class="form-group">
+      <label class="form-label">{{ champ.label_tag }}</label>
+      {{ champ }}
+    </div>
+    {% endfor %}
+    <div class="form-footer">
+      <p class="already-account">
+        Don't have an account?
+        <a href="{% url 'accounts:signup' %}" class="signin-link">Sign up instead</a>
+      </p>
+      <button type="submit" class="submit-button">Login</button>
+    </div>
+  </form>
+  <div class="form-errors">
+    {{ form.errors }}
+  </div>
+</div>
+{% endblock %}

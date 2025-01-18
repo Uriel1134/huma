@@ -1,0 +1,196 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block metas %} 
+    <title> Accueil </title>
+    <link rel="stylesheet" href="{% static 'appels.css' %}">
+    <link rel="stylesheet" href="{% static 'style.css' %}"> 
+    {% endblock %}
+    <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    
+</head>
+<body>
+    <!-- Début du Header -->
+    <header class="d-flex align-items-center text-white py-2">
+        <!-- Logo de gauche -->
+        <div class="logo-container1 d-flex align-items-center justify-content-center bg-white me-3" style="height: 73px; width: 73px;">
+            <img src="{% static 'img/icons/logoINSTI 1.png' %}" alt="Logo gauche" class="img-fluid">
+        </div>
+        <!-- Texte principal -->
+        <div class="text-container flex-grow-1">
+            <h1 class="m-0 fw-bold">INSTI</h1>
+            <p class="m-0">Institut Nationale Supérieur de Technologie Industrielle <br /> de Lokossa</p>
+        </div>
+        <!-- Liens à droite -->
+        <div class="links d-flex align-items-center">
+            <a href="#" class="text-white d-flex align-items-center me-3">
+                <img src="{% static 'img/icons/info-circle-fill.svg' %}" alt="Info" class="icon-white me-1" style="width: 20px; height: 20px;" class="me-1"> Accès rapide
+            </a>
+            <span class="text-white">|</span>
+            <a href="#" class="text-white d-flex align-items-center mx-3">
+                <img src="{% static 'img/icons/snow3.svg' %}" alt="Observatoire" class="icon-white me-1" style="width: 20px; height: 20px;" class="me-1"> Observatoire
+            </a>
+            <span class="text-white">|</span>
+            <a href="#" class="text-white d-flex align-items-center ms-3">
+                <img src="{% static 'img/icons/person-fill.svg' %}" alt="Person" class="icon-white me-1" style="width: 20px; height: 20px;" class="me-1"> Nous écrire
+            </a>
+        </div>
+        <!-- Logo de droite -->
+        <div class="logo-container1 d-flex align-items-center justify-content-center bg-white ms-3" style="height: 73px; width: 73px;">
+            <img src="{% static 'img/icons/0 2.png'' %}" alt="Logo droite" class="img-fluid">
+        </div>
+    </header>
+    <!-- Fin du Header -->
+
+    <!-- Début du Menu de Navigation -->
+    <nav class="navbar navbar-expand-lg custom-navbar">
+        <div class="container">
+            <!-- Bouton de menu (mobile) -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <!-- Menu principal -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"><a class="nav-link" href="{% url 'recruit:home' %}">ACCEUIL</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'recruit:appels' %}">APPELS</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">CONTACTS</a></li>
+                    <!-- Logo central -->
+                    <li class="nav-item logo-container">
+                        <a href="#">
+                            <img src="{% static 'img/icons/logo.png' %}" style="width: 110px; height: 94px" alt="Logo entreprise" class="img-fluid logo">
+                        </a>
+                    </li>
+                    {% if user.is_authenticated %}
+                    <li class="nav-item"><a class="nav-link" href="{% url 'recruit:dash' %}" >DASHBOARD</a></li>
+                    <div style="width: 171px; height: 38px; position: relative">
+                        <div style="width: 140px; height: 38px; left: 0px; top: 0px; position: absolute; background: #0D4293; border-radius: 11px"></div>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'accounts:logout' %}"> 
+                            <div style="left: 26px; top: 11px; position: absolute; color: white; font-size: 13px; font-family: Montserrat; font-weight: 700; text-transform: uppercase; word-wrap: break-word"> DECONNEXION </div>
+                        </a></li>
+                    </div>
+                    {% else %}  
+                    <li class="nav-item"><a class="nav-link" href="{% url 'accounts:login' %}" >SE CONNECTER</a></li>
+                    <div style="width: 171px; height: 38px; position: relative">
+                        <div style="width: 140px; height: 38px; left: 0px; top: 0px; position: absolute; background: #0D4293; border-radius: 11px"></div>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'accounts:signup' %}"> 
+                            <div style="left: 26px; top: 11px; position: absolute; color: white; font-size: 13px; font-family: Montserrat; font-weight: 700; text-transform: uppercase; word-wrap: break-word"> INSCRIPTION </div>
+                        </a></li>
+                    </div>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- Fin du Menu de Navigation -->
+
+{% block contenu %}
+    <!-- Début de la Section Principale -->
+    <div style="width: 100%; height: 80vh; position: relative; overflow: hidden; margin-bottom: 50px;">
+        <img style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0" src="{% static 'img/icons/Rectangle 2.png' %}" alt="Background" />
+        <div style="width: 100%; height: 100%; position: absolute; top: 0; left: 0; background: linear-gradient(90deg, black 0%, rgba(0, 0, 0, 0.3) 100%)">
+            <div style="width: 90%; max-width: 1200px; height: 100%; margin: 0 auto; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; gap: 20px">
+                <h1 style="color: white; font-size: 3rem; font-family: Montserrat, sans-serif; font-weight: 700; line-height: 1.2; text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.7)">
+                    Rejoignez l’INSTI - Ensemble, formons les talents de demain !
+                </h1>
+                <p style="color: white; font-size: 1.25rem; font-family: Montserrat, sans-serif; font-weight: 400; line-height: 1.5; max-width: 500px">
+                    Nous offrons une expérience transparente pour vous.
+                </p>
+                <div>
+                    <a href="{% url 'accounts:signup' %}"  style="display: inline-block; padding: 15px 30px; background: #0d4293; color: white; border-radius: 5px; text-decoration: none; font-size: 1rem; font-weight: 700; font-family: Montserrat, sans-serif; text-align: center">
+                        Déposer une candidature
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Fin de la Section Principale -->
+
+    <!-- Début de la section Appel à candidature -->
+
+<div class="container my-5">
+  <div style="color: #0D4293; font-size: 40px; font-family: Montserrat; font-weight: 700; line-height: 50px; letter-spacing: 0.20px; word-wrap: break-word">APPELS A CANDIDATURE DISPONIBLE  </div> <br>
+        <div class="lol">
+            <div class='ok'> 
+                <div class="conteneur">
+                    {% for app in appels %} 
+                    <div class='box'> 
+                    <h2>  {{ app.titre }} </h2>
+                    <p>  {{ app.description }} </p>
+                    <p> Missions : {{ app.missions }} </p> 
+                    <h4> Clôture {{ app.date_fin }} </h4> 
+                    <a href="{% url 'recruit:candidater' appel_id=app.id %}"> Postuler </a>
+                    </div>
+                    {% empty %}
+                    <div>  Pas d'appels à candidatures en cours  </div>  
+                    {% endfor %}   
+                </div>   
+            </div>
+        </div>
+    </div>
+</div>
+                    
+{% endblock %}
+
+    <!-- Fin de la section Appel à candidature -->
+
+
+    <!-- Début du Footer -->
+    <footer class="py-4">
+        <div class="container">
+            <div class="row">
+                <!-- Logo et Informations -->
+                <div class="col-md-4">
+                    <img src="{% static 'img/icons/logoINSTI 1.png' %}" alt="Logo" class="mb-3" style="width: 80px;"> 
+                    <p class="mb-0">Lokossa, Agnivedji</p>
+                    <p><strong>(+229) 22 41 13 66</strong></p>
+                    <p>"Science et technologie au service de l'homme"</p>
+                    <a href="mailto:instilokossa@gmail.com" class="text-white"><strong>instilokossa@gmail.com</strong></a>
+                    <div class="mt-3">
+                        <!-- Icône Facebook -->
+                        <a href="https://facebook.com" target="_blank" class="text-white me-3">
+                            <img src="{% static 'img/icons/facebook.svg' %}" alt="Facebook" class="icon-white me-1" style="width: 40px; height: 40px;">
+                        </a>
+                        <!-- Icône YouTube -->
+                        <a href="https://youtube.com" target="_blank" class="text-white me-3">
+                            <img src="{% static 'img/icons/youtube.svg' %}" alt="YouTube" class="icon-white me-1" style="width: 40px; height: 40px;">
+                        </a>
+                    </div>
+                    <div class="underline mt-2"></div>
+                </div>
+    
+                <!-- Nos Ressources -->
+                <div class="col-md-4">
+                    <h5>NOS RESSOURCES</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-white text-decoration-none">Incubateur de startups</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">Unité d'application de l'INSTI</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">Plateforme E-learning</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">Blog officiel de l'INSTI</a></li>
+                    </ul>
+                </div>
+    
+                <!-- Liens Utiles -->
+                <div class="col-md-4">
+                    <h5>LIENS UTILES</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-white text-decoration-none">Ministère de l'Enseignement Supérieur et de la Recherche Scientifique</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">Université Nationale des Sciences, Technologies, Ingénierie et Mathématiques</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">Institut National Supérieur de Technologie Industrielle</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="text-center mt-4">
+                <p class="mb-0">INSTI © Tous droits réservés 2024-2025</p>
+            </div>
+        </div>
+    </footer>
+    <!-- Fin du Footer -->
+</body>
+
+</html>

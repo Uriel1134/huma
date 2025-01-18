@@ -1,0 +1,49 @@
+{% extends "dashboard.html" %}
+{% load static %}
+  
+  {% block link %}   
+    <link rel="stylesheet" href="{% static "stats.css" %}">
+    <script src="https://kit.fontawesome.com/e09ff8d5d8.js" crossorigin="anonymous"></script>
+  {% endblock %}
+
+  {% block contents %} 
+    <div class="table-container">
+      <div class="table-title"> Appels lancés </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th> Titre </th>
+            <th> Missions </th>
+            <th> Début </th>
+            <th> Fin </th>
+            <th> Action </th>
+            <th> Candidatures </th>
+
+          </tr>
+        </thead>
+        <tbody>
+          {% for app in appel %}
+          <tr>
+            <td class="project-name" > {{ app.titre }} </td>
+            <td> {{ app.mission }}</td>
+            <td> {{ app.date_debut }} </td>
+            <td> <span class="status active"> {{ app.date_fin }} </span> </td>        
+            <td class="actions"> 
+              <a href="{% url "recruit:up_appel" pk=app.id %}"> <i class="fa-solid fa-pen"></i> </a> 
+              <a href="{% url "recruit:del_appel" pk=app.id %}"> <i class="fa-regular fa-trash"></i> </a> 
+            </td>
+            <td class="actions"> <a href="{% url "recruit:candidatures" %}"> Voir </a> </td>
+          </tr>
+          {% empty %}
+          {% endfor %}
+
+
+        </tbody>
+      </table>
+    </div>
+    
+    <div class="table-title" > <a href="{% url "recruit:lancer_appel" %}" class=" bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 ">Nouvel appel</a> </div>
+
+  {% endblock %}
+

@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static 'stats.css' %}">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Document</title>
+</head>
+<body>
+  {% include "statics/header.html" %}
+
+  <div class="table-container">
+    <div class="table-title"> {{ can.appel }} </div>
+    <table class="min-w-fit bg-white">
+      <thead class="bg-[#6366f1]">
+        <tr>
+          <th> Candidats </th>
+          <th> Demande  </th>
+          <th> Diplome </th> 
+          <th> CV </th> 
+          <th> IFU </th> 
+          <th> RIB </th> 
+          <th> Décision </th> 
+        </tr>
+      </thead>
+      
+      <tbody>
+        {% for can in cand %}
+          <tr>
+            <td class="project-name"> {{ can.enseignant }} </td>
+            <td> <a target='blank' href="{{ can.demande.url }}"> Voir </a> </td>
+            <td> <a target='blank' href="{{ can.diplome.url }}"> Voir </a> </td>
+            <td> <a target='blank' href="{{ can.cv.url }}"> Voir </a> </td>
+            <td> <a target='blank' href="{{ can.ifu.url }}"> Voir </a> </td>
+            <td> <a target='blank' href="{{ can.rib.url }}"> Voir </a> </td>         
+            <td> {{ decisions|slice:forloop.counter|first }} </td>
+          </tr>
+        {% empty %}
+        Pas d'appel en cours
+        {% endfor %}
+
+      </tbody>
+    </table>
+  </div>
+
+  
+  {% include "statics/footer.html" %}
+
+</body>
+</html>

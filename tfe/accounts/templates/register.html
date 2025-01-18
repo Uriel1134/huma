@@ -1,0 +1,82 @@
+{% extends "statics.html" %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Sign up</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Ajouter Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Styles et autres scripts -->
+    <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  </head>
+
+  <body>
+    {% include "statics/header.html" %}
+
+    <div class="container">
+      {% block contenu %}
+      <div class="registration-container">
+        <form method="POST" class="registration-form">
+          <h2 class="form-title">Créer un compte</h2>
+          {% csrf_token %}  <!-- Protection CSRF -->
+
+          {% for champ in signup %}
+          <div class="form-group">
+            <label class="form-label">{{ champ.label_tag }}</label>
+            <div class="input-with-icon">
+              <!-- Icône ajoutée pour le champ Nom d'utilisateur -->
+              {% if champ.name == "username" %}
+                <i class="fa fa-user"></i>
+              {% elif champ.name == "password1" %}
+                <!-- Icône ajoutée pour le champ Mot de passe -->
+                <i class="fa fa-lock"></i>
+              {% elif champ.name == "password2" %}
+                <!-- Icône ajoutée pour le champ Confirmer votre mot de passe -->
+                <i class="fa fa-check"></i>
+              {% endif %}
+              {{ champ }}
+            </div>
+
+            <!-- Affichage des erreurs pour chaque champ -->
+            {% if champ.errors %}
+              <ul class="error-list">
+                {% for error in champ.errors %}
+                  <li class="error">{{ error }}</li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+          </div>
+          {% endfor %}
+
+          <div class="form-footer">
+            <p class="already-account">
+              Vous avez déjà un compte ?
+              <a href="{% url 'accounts:login' %}" class="signin-link">Se connecter</a>
+            </p>
+            <button type="submit" class="submit-button">S'inscrire</button>
+          </div>
+        </form>
+
+        <!-- Affichage des erreurs générales du formulaire -->
+        <div class="form-errors">
+          {% if signup.errors %}
+            <ul>
+              {% for error in signup.errors %}
+                <li class="error">{{ error }}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        </div>
+      </div>
+      {% endblock %}
+    </div>
+
+    {% include "statics/footer.html" %}
+  </body>
+</html>
