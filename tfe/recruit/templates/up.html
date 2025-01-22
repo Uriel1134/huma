@@ -1,15 +1,56 @@
-{% extends "register.html" %}
+{% extends "dashboard.html" %}
+{% load custom_filters %}
 {% load static %}
 
-{% block contenu %}
-  <h2> {{ app }} </h2>
-  
-  <form class="form-control" action="" method="POST" enctype="multipart/form-data">
+{% block head %}
+  <style>
+      /* Ajout de styles pour les éléments de base si nécessaire */
+      .form-group {
+          margin-bottom: 20px;
+      }
+
+      /* Focus de bouton pour améliorer l'UX */
+      .btn-focus {
+          transition: all 0.3s ease;
+      }
+      .btn-focus:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+  </style>
+{% endblock %}
+
+{% block contents %}
+<div class="container mx-auto mt-8">
+  <h1 class="text-2xl font-semibold text-[#0d47a1] text-center mb-6">Modifier votre profil</h1>
+  <form method="post" enctype="multipart/form-data" class="bg-white p-8 rounded-lg shadow-lg max-w-4xl mx-auto">
     {% csrf_token %}
-     {% for field in form %}
-      {{ field.label_tag }} {{ field }}
+    {% for field in form %}
+    <div class="form-group">
+      <label for="{{ field.id_for_label }}" class="block text-sm font-bold text-gray-700 mb-2">
+        {{ field.label }}
+      </label>
+      <div class="relative">
+        {{ field|add_class:"w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 py-3 px-4" }}
+      </div>
+      {% if field.help_text %}
+      <p class="text-sm text-gray-500 mt-1">{{ field.help_text }}</p>
+      {% endif %}
+      {% if field.errors %}
+      <p class="text-sm text-red-500 mt-1">{{ field.errors }}</p>
+      {% endif %}
+    </div>
     {% endfor %}
-    <input type="submit" value='Envoyer'>
+
+    <div class="form-buttons flex justify-between mt-6">
+      <a href="{% url 'recruit:profil' %}" class="btn btn-secondary py-2 px-6 text-white rounded-md bg-gray-600 hover:bg-gray-700 transition-all duration-300">
+        Annuler
+      </a>
+      <button type="submit" class="btn btn-primary py-2 px-6 text-white rounded-md bg-[#0d47a1] hover:bg-[#1565c0] transition-all duration-300">
+        Enregistrer
+      </button>
+    </div>
   </form>
-    {{ form.errors }}
+</div>
+
 {% endblock %}

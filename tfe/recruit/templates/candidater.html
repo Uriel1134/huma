@@ -1,44 +1,147 @@
-{% extends "statics.html" %}
+{% extends "dashboard.html" %}
 {% load static %}
 
 {% block head %}
   <title>Candidature</title>
+  <link rel="stylesheet" href="{% static 'candidater.css' %}">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+  <style>
+    /* Style des champs de fichier */
+    .custom-file-input input[type="file"] {
+        display: none; /* Masque le champ de téléchargement natif */
+    }
+
+    .custom-file-input label {
+        display: inline-block;
+        padding: 10px;
+        background-color: #e2e8f0;
+        color: #2d3748;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 100%;
+        text-align: center;
+        font-weight: bold;
+    }
+
+    .custom-file-input input[type="file"]:focus + label {
+        outline: 2px solid #3182ce;
+        border-color: #3182ce;
+    }
+
+    .custom-file-input input[type="file"]:invalid + label {
+        background-color: #e53e3e;
+        color: white;
+    }
+
+    .custom-file-input .file-name {
+        margin-top: 8px;
+        color: #4a5568;
+        font-size: 14px;
+    }
+
+    /* Style du bouton submit */
+    button[type="submit"] {
+        padding: 12px;
+        font-size: 16px;
+        border-radius: 5px;
+        font-weight: bold;
+        transition: background-color 0.3s;
+    }
+
+    button[type="submit"]:hover {
+        background-color: #2b6cb0;
+    }
+  </style>
 {% endblock %}
 
-{% block contenu %}
-      <!-- Affichage des détails de l'appel -->
-    <div class="app-details">
-      <h2>Candidature pour l'appel : {{ app.titre }}</h2>
-      <p class="app-date">
-        <strong>Date de fin :</strong> {{ app.date_fin }}
+<!-- Contenu principal : nav verticale + contenu -->
+<div class="content-wrapper">
+  <!-- Navigation verticale -->
+  <div class="vertical-nav">
+    <img src="{% static 'img/icons/logo.png' %}" alt="Logo" class="logo">
+    <a href="{% url 'recruit:dash' %}" class="nav-item">
+      <img src="{% static 'img/icons/Accueil.svg' %}" alt="Dashboard"> Appels En cours
+    </a>
+    <a href="{% url 'recruit:profil' %}" class="nav-item">
+      <img src="{% static 'img/icons/Vector.svg' %}" alt="Profil"> Mon Profil
+    </a>
+    <a href="{% url 'recruit:stats' %}" class="nav-item">
+      <img src="{% static 'img/icons/Vector (1).svg' %}" alt="Appels"> Appels Postulés
+    </a>
+    <a href="{% url 'recruit:home' %}" class="nav-item">
+      <img src="{% static 'img/icons/Vector (2).svg' %}" alt="Contacts"> Accueil
+    </a> 
+    <a href="{% url 'accounts:logout' %}" class="nav-item">
+      <p>Déconnexion</p>
+    </a>
+  </div>
+
+  <!-- Contenu principal -->
+  <main class="main-content flex-1 bg-gray-100 p-6">
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-2xl font-bold text-gray-800">Tableau de bord</h1>
+      <div class="flex space-x-4">
+        <a href="{% url 'comptes:change_pwd' %}">
+          <img src="https://via.placeholder.com/40" alt="Profil" class="w-10 h-10 rounded-full">
+        </a>
+      </div>
+    </div>
+
+    {% block contents %}
+    <!-- Affichage des détails de l'appel -->
+    <div class="bg-white p-6 shadow rounded-lg">
+      <h2 class="text-xl font-bold text-gray-700 mb-4 text-blue-500"  style="color: #0d47a1;">Candidature pour l'appel : {{ app.titre }}</h2>
+      <p class="text-gray-600 mb-2">
+        <strong>Date de fin :</strong> {{ app.date_fin|date:"d/m/Y" }}
       </p>
       {% if app.document %}
-        <p class="app-document">
-          <a href="{{ app.document.url }}" target="_blank" class="download-link">
-            Télécharger le document associé
-          </a>
-        </p>
+      <p class="mb-4">
+        <a href="{{ app.document.url }}" target="_blank" class="text-red-500 hover:underline">
+          <i class="fas fa-download mr-2"></i> Télécharger le document associé
+        </a>
+      </p>      
       {% else %}
-        <p class="app-document none">
-          Aucun document associé.
-        </p>
+      <p class="text-gray-500">Aucun document associé.</p>
       {% endif %}
     </div>
 
     <!-- Formulaire de candidature -->
-    <form class="form-control" action="" method="POST" enctype="multipart/form-data">
+    <form class="bg-white p-6 mt-6 shadow rounded-lg" action="" method="POST" enctype="multipart/form-data">
       {% csrf_token %}
-      {% for field in form %}
+      <h3 class="text-xl font-semibold text-gray-700 mb-4"  style="color: #0d47a1;">Postulez à cet appel</h3>
+      <div class="grid grid-cols-1 gap-6">
+        {% for field in form %}
         <div class="form-group">
-          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-          {{ field }}
-          {% if field.help_text %}
-            <small>{{ field.help_text }}</small>
+          <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">
+            {{ field.label }}
+          </label>
+
+          <!-- Champs de téléchargement de fichiers -->
+          {% if field.field.widget.input_type == "file" %}
+          <div class="custom-file-input">
+            {{ field }}
+            {% if field.help_text %}
+              <small class="text-gray-500">{{ field.help_text }}</small>
+            {% endif %}
+          </div>
+          {% else %}
+            {{ field }}
           {% endif %}
         </div>
-      {% endfor %}
-      <input type="submit" value="Envoyer" class="btn btn-primary">
+        {% endfor %}
+      </div>
+
+      <button type="submit" class="mt-4 px-6 py-2 text-white rounded" style="background-color: #0d47a1;" onmouseover="this.style.backgroundColor='#1565c0'" onmouseout="this.style.backgroundColor='#0d47a1'">
+        Envoyer
+      </button>
+            
     </form>
 
-    {{ form.errors }}
-{% endblock %}
+    <!-- Affichage des erreurs -->
+    <div class="mt-4 text-red-500">
+      {{ form.errors }}
+    </div>
+
+    {% endblock %}
+  </main>
+</div>

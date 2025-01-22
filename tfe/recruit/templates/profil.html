@@ -1,18 +1,36 @@
 {% extends "statics.html" %}
+{% load custom_filters %}
 {% load static %}
 
+{% block insti %}
+<div class="container mx-auto px-6 py-8">
+  <h1 class="text-3xl font-semibold text-center text-[#0d47a1] mb-8">Modifier votre Profil</h1>
+  <div class="bg-white p-8 rounded-lg shadow-md max-w-3xl mx-auto">
+    <form method="POST" class="space-y-6" enctype="multipart/form-data">
+      {% csrf_token %}
+      
+      {% for champ in form %}
+        <div class="form-group">
+          <label for="{{ champ.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-2">
+            {{ champ.label }}
+          </label>
+          {{ champ|add_class:"w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-[#0d47a1] focus:border-[#0d47a1]" }}
+          {% if champ.help_text %}
+          <p class="text-sm text-gray-500 mt-1">{{ champ.help_text }}</p>
+          {% endif %}
+          {% if champ.errors %}
+          <p class="text-sm text-red-500 mt-1">{{ champ.errors }}</p>
+          {% endif %}
+        </div>
+      {% endfor %}
 
-  {% block insti %}   
-    <div class="containe">
-      <form method="POST" class=""  enctype="multipart/form-data">
-        {% csrf_token %}
-        {% for champ in form %}
-          {{ champ.label_tag }} {{ champ }}
-        {% endfor %}
-        <input type="submit" value='Créer' class="signin-button">          
-      </form>
-      {{ form.errors }}
-    </div> 
-
-  {% endblock %}
-  
+      <div class="flex justify-between gap-4">
+        <a href="{% url 'recruit:profil' %}" class="w-full sm:w-auto py-2 px-6 bg-gray-500 text-white text-center rounded-md hover:bg-gray-600 transition-all duration-300">
+          Annuler
+        </a>
+        <input type="submit" value="Enregistrer" class="w-full sm:w-auto py-2 px-6 bg-[#0d47a1] text-white text-center rounded-md hover:bg-[#1565c0] transition-all duration-300">
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

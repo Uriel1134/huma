@@ -8,6 +8,7 @@ from .views import *
 
 app_name = "recruit"
 urlpatterns = [
+  path("dashboard/", views.dashboard, name="dashboard"),
   path("accueil/", views.accueil, name="home"),
   path("create_profil/", views.create_profil, name="profil_creation"),
   path("appels/", AppelListView.as_view(), name="appels"),

@@ -28,8 +28,8 @@ def appels(request):
 def group_check(user):
   return user.groups.filter(name__in=['Evaluateur', 'Enseignant', 'Ecole']).exists()
 
-def accueil(request:HttpRequest):
-  return render(request, 'accueil.html')
+# def accueil(request:HttpRequest):
+#   return render(request, 'accueil.html')
 
 @user_passes_test(group_check)
 def dash(request:HttpRequest):
@@ -112,26 +112,7 @@ def profile(request:HttpRequest):
 
 
 
-def stats(request:HttpRequest):
-  """
-    appel_ecole : liste des appels créés une école
-    candidature : liste des candidatures d'un enseignant  
-  """  
-  if request.user.groups.filter(name='Evaluateur').exists():
-    candidature = Candidature.objects.filter(statut='attente').order_by("appel")  
-    return render(request, 'stats/jury.html', context={'jury':candidature})
-  
-  elif request.user.groups.filter(name='Enseignant').exists():
-    candidature = Candidature.objects.filter(enseignant=request.user.enseignant)
-    evaluations = Evaluation.objects.filter(candidature__in=candidature)
-    decision = [eva.get_decision_display() for eva in evaluations]
-    return render(request, 'stats/teacher.html', context={'candidatures':candidature, 'decisions':decision})
-  
-  elif request.user.groups.filter(name='Ecole').exists():
-    appels = Appel.objects.filter(ecole=request.user.ecole)
-    # can = Candidature.objects.filter(appel__in = appels)
-    return render(request, 'stats/ecole.html', context={'appel':appels})
-  return HttpResponse("Vous n'êtes pas autorisé à accéder à cette page", status=403)
+
 
 
 class CandidatureCreateView(PermissionRequiredMixin, CreateView):
@@ -153,31 +134,40 @@ class CandidatureCreateView(PermissionRequiredMixin, CreateView):
     return super().form_valid(form)
 
 
-class AppelCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
-  permission_required = "recruit.view_ecole"
-  model = Appel
-  form_class = AppelForm
-  template_name = "lancer_appel.html"
-  success_url = reverse_lazy('recruit:stats')
- 
-  def form_valid(self, form):
-    form.instance.ecole = get_object_or_404(Ecole, created_by=self.request.user)
-    return super().form_valid(form)
-  
-  def get_context_data(self, **kwargs):
+class AppelCreateView(LoginRequiredMixin, CreateView):
+    permission_required = "recruit.view_ecole"
+    model = Appel
+    form_class = AppelForm
+    template_name = "lancer_appel.html"
+    success_url = reverse_lazy('recruit:stats')
+
+    def form_valid(self, form):
+        # Associe l'école à l'instance avant de la sauvegarder
+        form.instance.ecole = get_object_or_404(Ecole, created_by=self.request.user)
+        # Sauvegarde l'instance et définit self.object
+        self.object = form.save()
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        # Si l'objet a été sauvegardé, on l'ajoute au contexte
+        if hasattr(self, 'object'):
+            context['object'] = self.object
         return context
-  
-  def post(self, request, *args, **kwargs):
+
+    def post(self, request, *args, **kwargs):
+        # Récupérer le formulaire
+        form = self.get_form()
+
+        # Si un fichier est envoyé, il sera pris en compte
         if 'document' in request.FILES:
-            form = self.get_form()
             if form.is_valid():
-                self.object = form.save()
-                return self.form_valid(form)
+                self.object = form.save()  # Sauvegarde l'instance
+                return self.form_valid(form)  # Redirige vers la page de succès
             else:
-                return self.form_invalid(form)
+                return self.form_invalid(form)  # Renvoie les erreurs si le formulaire est invalide
         else:
-            return self.render_to_response(self.get_context_data(form=form))
+            return self.render_to_response(self.get_context_data(form=form))  # Sinon, on renvoie le formulaire avec erreurs éventuelles
   
 
 class AppelUpdateView(UpdateView):
@@ -256,16 +246,23 @@ class CandidatureListView(ListView):
   context_object_name = 'cand'
 
   def get_queryset(self):
-    appels = Appel.objects.filter(ecole=self.request.user.ecole)      
-    return super().get_queryset().filter(appel__in = appels)  
+    appels = Appel.objects.filter(ecole=self.request.user.ecole)
+    candidatures = Candidature.objects.filter(appel__in=appels).select_related('appel', 'enseignant')
+    #return super().get_queryset().filter(appel__in=appels).select_related('appel', 'enseignant')  
+    return candidatures
   
   def get_context_data(self, **kwargs):
     context = super().get_context_data(**kwargs)
+    appels = Appel.objects.filter(ecole=self.request.user.ecole)
+    context['appels'] = appels
     # Vérifie si chaque `can` a une évaluation associée avant d'appeler la méthode
-    context['decisions'] = [
+    context['decisions'] = {
+      appel.id: [
         eval_obj.get_decision_display() if (eval_obj := can.evaluation_set.first()) else "Non évalué"
-        for can in context['cand']
-    ]
+        for can in Candidature.objects.filter(appel=appel)
+      ]
+      for appel in appels
+    }
     return context
 
 
@@ -278,7 +275,7 @@ def candidater(request, appel_id):
             candidature.appel = appel  # Associe l'appel spécifique
             candidature.enseignant = request.user.enseignant  # Associe l'enseignant connecté
             candidature.save()
-            return redirect('recruit:candidature_conf')  # Redirige après soumission, ajustez selon votre besoin
+            return redirect('recruit:candidature_conf')  
     else:
         form = CandidatureForm()
 
@@ -388,3 +385,112 @@ def register(request):
         form = UserCreationForm()
 
     return render(request, 'register.html', {'form': form})
+
+
+# Dans ta vue
+def get_context_data(self, **kwargs):
+    context = super().get_context_data(**kwargs)
+    context['form_widget_types'] = {
+        field.name: field.field.widget.__class__.__name__ for field in self.form
+    }
+    return context
+
+
+@login_required
+def redirect_dashboard(request):
+    user = request.user
+    
+    # Déterminer le rôle de l'utilisateur
+    if user.groups.filter(name="Enseignant").exists():
+        role = "Enseignant"
+    elif user.groups.filter(name="Ecole").exists():
+        role = "Ecole"
+    elif user.groups.filter(name="Evaluateur").exists():
+        role = "Evaluateur"
+    else:
+        role = "Inconnu"
+
+    return render(request, "dashboard.html", {"role": role})
+
+
+def dashboard(request: HttpRequest):
+    """
+    Tableau de bord dynamique en fonction du rôle de l'utilisateur.
+    """
+    user = request.user
+
+    # Si l'utilisateur est évaluateur
+    if user.groups.filter(name="Evaluateur").exists():
+        # Liste des candidatures en attente, triées par appel
+        candidatures = Candidature.objects.filter(statut='attente').order_by("appel")
+        context = {
+            "title": "Candidatures en attente",
+            "subtitle": "Liste des candidatures triées par appel",
+            "candidatures": candidatures,
+        }
+        template_name = "stats/jury.html"
+
+    # Si l'utilisateur est enseignant
+    elif user.groups.filter(name="Enseignant").exists():
+        candidatures = Candidature.objects.filter(enseignant=user.enseignant)
+        evaluations = Evaluation.objects.filter(candidature__in=candidatures)
+        context = {
+            "title": "Vos Candidatures",
+            "subtitle": "Candidatures soumises",
+            "candidatures": candidatures,
+            "decisions": [
+                eva.get_decision_display() for eva in evaluations
+            ],  # Décisions associées
+        }
+        template_name = "stats/teacher.html"
+
+    # Si l'utilisateur est associé à une école
+    elif user.groups.filter(name="Ecole").exists():
+        # Liste des appels créés par l'école
+        appels = Appel.objects.filter(ecole=user.ecole)
+        candidatures = Candidature.objects.filter(appel__in=appels)  # Filtrage des candidatures par appel
+        context = {
+            "title": "Appels créés",
+            "subtitle": "Candidatures soumises à vos appels",
+            "candidatures": candidatures,
+        }
+        template_name = "stats/ecole.html"
+
+    # Si l'utilisateur n'appartient à aucun groupe
+    else:
+        return HttpResponseForbidden("Vous n'êtes pas autorisé à accéder à cette page")
+
+    # Afficher le tableau de bord correspondant
+    return render(request, template_name, context)
+
+
+
+def stats(request:HttpRequest):
+    """
+    Cette vue gère le contenu dynamique du dashboard en fonction des groupes d'utilisateur.
+    """
+    if request.user.groups.filter(name='Evaluateur').exists():
+        # Liste des candidatures en attente, triées par appel
+        candidatures = Candidature.objects.filter(statut='attente').order_by("appel")
+        return render(request, 'stats/jury.html', context={'jury': candidatures, 'role': 'Evaluateur'})
+
+    elif request.user.groups.filter(name='Enseignant').exists():
+        # Liste des candidatures de l'enseignant
+        candidatures = Candidature.objects.filter(enseignant=request.user.enseignant)
+        evaluations = Evaluation.objects.filter(candidature__in=candidatures)
+        
+        # Liste des décisions pour chaque évaluation
+        decisions = [eva.get_decision_display() for eva in evaluations]
+        
+        return render(request, 'stats/teacher.html', context={'candidatures': candidatures, 'decisions': decisions, 'role': 'Enseignant'})
+
+    elif request.user.groups.filter(name='Ecole').exists():
+        # Liste des appels créés par l'école
+        appels = Appel.objects.filter(ecole=request.user.ecole)
+        candidatures = Candidature.objects.filter(appel__in=appels)
+        
+        return render(request, 'stats/ecole.html', context={'appel': appels, 'candidatures': candidatures, 'role': 'Ecole'})
+
+    # Si l'utilisateur ne fait partie d'aucun des groupes définis
+    return HttpResponse("Vous n'êtes pas autorisé à accéder à cette page", status=403)
+

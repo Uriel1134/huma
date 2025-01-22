@@ -1,57 +1,108 @@
-.lol {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  /* height: 100vh; */
-  background-color: #f8f8f8;
+/* Container principal */
+.content-container {
+  background-color: #f4f9ff; /* Couleur de fond légèrement bleutée pour un effet apaisant */
+  padding: 4rem 1rem;
+  font-family: 'Arial', sans-serif; /* Police simple et moderne */
 }
 
-.ok {
-  width: 80%;
-  max-width: 1200px;
-  /* background-color: white; */
-  /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
-  padding: 20px;
-  border-radius: 10px;
-}
-.ok h2 {
-  margin-bottom: 20px;
+/* En-tête */
+.header h2 {
+  font-size: 2.5rem;
   font-weight: bold;
-  font-size: 20px;
+  color: #0d47a1; /* Couleur principale */
+  margin-bottom: 2rem;
+  text-transform: uppercase; /* Met en valeur le titre */
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Ajoute un effet subtil d'ombre */
 }
-.conteneur {
-  display: flex;
-  flex-direction: column;
+
+/* Container des postes */
+.job-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
 }
-.box {
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  margin-bottom: 10px;
-  padding: 20px;
+
+/* Box de chaque job */
+.job-box {
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-.box h2 {
-  margin: 0;
-  margin-bottom: 10px;
+
+/* Animation au survol */
+.job-box:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
-.box p {
-  margin: 5px 0;
+
+/* Mise en avant des titres */
+.job-box h3 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #0d47a1;
+  margin-bottom: 1rem;
 }
-.box h4 {
-  margin-top: 10px;
-  color: #777;
+
+/* Paragraphe de description */
+.job-box p {
+  color: #6b7280; /* Couleur grise neutre pour les textes */
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
 }
-.box a {
+
+/* Détails sur la clôture */
+.job-box h4 {
+  font-size: 1.1rem;
+  color: #4b5563;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+}
+
+/* Bouton Postuler */
+.apply-btn {
   display: inline-block;
-  margin-top: 10px;
-  padding: 5px 10px;
-  background-color: #007bff;
-  color: white;
+  padding: 0.75rem 2rem;
+  background-color: #0d47a1;
+  color: #ffffff;
+  font-weight: bold;
+  border-radius: 2rem;
+  text-align: center;
   text-decoration: none;
-  border-radius: 3px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  font-size: 1rem;
 }
-.box a:hover {
-  background-color: #0056b3;
+
+/* Hover effect for button */
+.apply-btn:hover {
+  background-color: #1565c0;
+  transform: scale(1.05);
+}
+
+/* Message lorsque aucun appel n'est disponible */
+.empty-message {
+  font-size: 1.2rem;
+  color: #9ca3af;
+  text-align: center;
+  margin-top: 2rem;
+  font-style: italic;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .header h2 {
+    font-size: 2rem;
+  }
+
+  .job-box {
+    padding: 1.5rem;
+  }
+
+  .apply-btn {
+    font-size: 0.9rem;
+    padding: 0.5rem 1.5rem;
+  }
 }

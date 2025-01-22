@@ -2,13 +2,12 @@
 
 {% load static %}
 {% block link %}   
-  <link rel="stylesheet" href="{% static "stats.css" %}">
+  <link rel="stylesheet" href="{% static 'stats.css' %}">
 {% endblock %}
 
 {% block contents %} 
 
   <div class="flex flex-col items-center">
-    {% regroup jury by appel as appel_list %}
     {% for appel in appel_list %}
       <div class="table-container">
         <div class="table-title"> {{ appel.grouper }} </div>
@@ -30,7 +29,7 @@
                 <td> <a target="blank" href="{{ can.demande.url }}"> Voir </a> </td>
                 <td> <a target="blank" href="{{ can.diplome.url }}"> Voir </a> </td>
                 <td> <a target="blank" href="{{ can.cv.url }}"> Voir </a> </td>
-                <td class="actions"> <a href="{% url "recruit:evaluer" candidature_id=can.id %}">Evaluer</a> </td>
+                <td class="actions"> <a href="{% url 'recruit:evaluer' candidature_id=can.id %}">Evaluer</a> </td>
               </tr>
   
             {% endfor %}

@@ -1,17 +1,82 @@
-{% extends "register.html" %}
+{% extends "dashboard.html" %}
 {% load static %}
+{% block contents %}
+<div class="content-wrapper flex justify-center py-12">
+    <main class="w-full max-w-4xl bg-white p-8 rounded-lg shadow-lg transition-all hover:shadow-2xl">
+        <form class="form-control" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <!-- Affichage des champs du formulaire -->
+            {% for field in form %}
+            <div class="form-group mb-6">
+                <!-- Affichage du label -->
+                <label for="{{ field.id_for_label }}" class="block text-gray-700 font-medium mb-2">
+                    {{ field.label }}
+                </label>
+                
+                <!-- Logique des champs spécifiques -->
+                {% if field.name == 'titre' %}
+                    <input type="text" id="{{ field.id_for_label }}" name="{{ field.name }}" value="{{ field.value }}"
+                        class="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all">
+                {% elif field.name == 'ecole' %}
+                    <select id="{{ field.id_for_label }}" name="{{ field.name }}"
+                        class="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white cursor-pointer">
+                        <option value="" disabled selected>Sélectionner une école...</option>
+                        {% for option in field.field.choices %}
+                            <option value="{{ option.0 }}" {% if option.0 == field.value %}selected{% endif %}>
+                                {{ option.1 }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                {% elif field.name == 'nbr_poste' %}
+                    <div class="flex items-center space-x-2">
+                        <button type="button" class="text-gray-600 w-8 h-8 flex justify-center items-center bg-gray-100 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            onclick="this.nextElementSibling.stepDown()">-</button>
+                        <input type="number" id="{{ field.id_for_label }}" name="{{ field.name }}" value="{{ field.value }}"
+                            class="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all text-center">
+                        <button type="button" class="text-gray-600 w-8 h-8 flex justify-center items-center bg-gray-100 border border-gray-300 rounded-r-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            onclick="this.previousElementSibling.stepUp()">+</button>
+                    </div>
+                {% elif field.name == 'description' %}
+                    <textarea id="{{ field.id_for_label }}" name="{{ field.name }}" rows="4"
+                        class="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all">{{ field.value }}</textarea>
+                {% elif field.name == 'mission' %}
+                    <textarea id="{{ field.id_for_label }}" name="{{ field.name }}" rows="4"
+                        class="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all">{{ field.value }}</textarea>
+                {% elif field.name == 'date_fin' %}
+                    <input type="date" id="{{ field.id_for_label }}" name="{{ field.name }}" value="{{ field.value }}"
+                        class="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all">
+                {% elif field.name == 'document' %}
+                    <input type="file" id="{{ field.id_for_label }}" name="{{ field.name }}"
+                        class="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all">
+                {% else %}
+                    {{ field }}
+                {% endif %}
 
-{% block contenu %}
+                <!-- Affichage des erreurs de champ -->
+                {% if field.errors %}
+                <div class="text-red-500 text-sm mt-2">
+                    {% for error in field.errors %}
+                    <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
 
-  <form class="form-control" method="POST">
-    {% comment %} <h2> Lancer un appel </h2> {% endcomment %}
+            <!-- Bouton de soumission -->
+            <div class="form-action flex justify-center mt-6">
+                <input type="submit" value="Modifier" class="bg-blue-700 text-white px-6 py-3 rounded-lg hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full sm:w-auto transition-all ease-in-out duration-200">
+            </div>
+        </form>
 
-    {% csrf_token %}
-    {% for field in form %}
-      {{ field.label_tag }} {{ field }}
-    {% endfor %}
-    <input type="submit" value='Envoyer' class="appel">
-  </form>
-  {{ form.errors }}
- 
+        <!-- Affichage des erreurs non liées aux champs -->
+        {% if form.non_field_errors %}
+        <div class="text-red-500 text-sm mt-4">
+            {% for error in form.non_field_errors %}
+            <p>{{ error }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </main>
+</div>
 {% endblock %}

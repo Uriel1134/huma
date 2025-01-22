@@ -23,6 +23,7 @@ body {
   background-color: var(--background-color);
   color: var(--text-color);
   min-height: 100vh;
+  font-size: 16px;
 }
 
 /* Conteneur principal */
@@ -44,6 +45,7 @@ body {
   width: 100%;
   max-width: 800px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin-bottom: 2rem;
 }
 
 .profile-card:hover {
@@ -60,6 +62,7 @@ body {
   justify-content: center;
   padding: 2rem;
   color: #fff;
+  text-align: center;
 }
 
 .profile-image-section img {
@@ -71,13 +74,14 @@ body {
 }
 
 .profile-image-section h2 {
-  font-size: 1.5rem;
+  font-size: 1.75rem;
   margin-bottom: 0.5rem;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  font-weight: 600;
 }
 
 .profile-image-section p {
-  font-size: 1rem;
+  font-size: 1.125rem;
   opacity: 0.9;
 }
 
@@ -90,7 +94,7 @@ body {
 }
 
 .section-title {
-  font-weight: bold;
+  font-weight: 600;
   font-size: 1.5rem;
   color: var(--primary-color);
   border-bottom: 3px solid var(--secondary-color);
@@ -119,6 +123,52 @@ body {
   color: var(--text-color);
 }
 
+/* Formulaire d'édition */
+.edit-form {
+  background-color: var(--card-background);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  padding: 2rem;
+  margin-top: 2rem;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.edit-form input,
+.edit-form select,
+.edit-form button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 12px;
+  border-radius: var(--border-radius);
+  border: 1px solid #ddd;
+  font-size: 1rem;
+}
+
+.edit-form input:focus,
+.edit-form select:focus {
+  border-color: var(--primary-color);
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 114, 255, 0.2);
+}
+
+.edit-form button {
+  background-color: var(--primary-color);
+  color: #fff;
+  cursor: pointer;
+  border: none;
+  padding: 14px;
+  margin-top: 1rem;
+  transition: background-color 0.3s;
+  font-weight: bold;
+  border-radius: var(--border-radius);
+}
+
+.edit-form button:hover {
+  background-color: var(--secondary-color);
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .profile-card {
@@ -135,6 +185,10 @@ body {
   }
 
   .profile-info-section {
+    padding: 1.5rem;
+  }
+
+  .edit-form {
     padding: 1.5rem;
   }
 }

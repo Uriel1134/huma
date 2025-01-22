@@ -1,0 +1,45 @@
+/* Pour personnaliser les champs de fichier */
+.custom-file-input input[type="file"] {
+    display: none;
+}
+
+.custom-file-input label {
+    display: inline-block;
+    padding: 10px;
+    background-color: #e2e8f0;
+    color: #2d3748;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+}
+
+.custom-file-input input[type="file"]:focus + label {
+    outline: 2px solid #3182ce;
+    border-color: #3182ce;
+}
+
+.custom-file-input input[type="file"]:invalid + label {
+    background-color: #e53e3e;
+    color: white;
+}
+
+.custom-file-input .file-name {
+    margin-top: 8px;
+    color: #4a5568;
+    font-size: 14px;
+}
+
+/* Style du bouton submit */
+button[type="submit"] {
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+button[type="submit"]:hover {
+    background-color: #2b6cb0;
+}

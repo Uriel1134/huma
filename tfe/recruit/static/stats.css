@@ -1,122 +1,102 @@
-/* body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  margin: 0;
-  background-color: #f0f0f0;
-  font-family: Arial, sans-serif;
-} */
-
-
+/* Container principal */
 .table-container {
   width: 90%;
-  min-width: fit-content;
-  border-radius: 8px;
-  margin-bottom: 25px;
   margin: 25px auto;
+  border-radius: 8px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow-x: auto; /* Pour gérer les petits écrans */
 }
 
-
+/* Titre de la table */
 .table-title {
-  /* padding: 20px; */
+  margin-bottom: 15px;
   font-size: 18px;
   font-weight: bold;
-  /* color: #4b5563; */
+  color: #0d47a1;
+  text-align: left;
+  padding: 10px 0;
 }
 
-
+/* Tableau */
 table {
   width: 100%;
   border-collapse: collapse;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-
+  font-size: 14px; /* Taille plus petite */
 }
 
+/* En-tête */
 thead {
   background-color: #0d47a1;
   color: white;
-  /* background-color: #f8f9fa; */
-  /* color: #6b7280; */
 }
 
 th, td {
-  padding: 15px;
+  padding: 10px 8px; /* Moins d'espace */
   text-align: left;
+  border-bottom: 1px solid #e0e0e0;
+  vertical-align: middle; /* Alignement vertical */
 }
 
-
-th {
-  
-  
-  font-size: 14px;
-  font-weight: 600;
-}
-
-
-tr:nth-child(even) {
-  background-color: #f8f9fa;
-}
-
-
-.project-name {
-  font-weight: bold;
-  color: #374151;
-}
-
-
-.status {
-  padding: 5px 10px;
+/* Colonne "Fin" : Contenu centré */
+td span.status {
+  display: inline-block;
+  text-align: center;
+  padding: 5px 8px;
   border-radius: 12px;
   font-size: 12px;
   font-weight: bold;
+  white-space: nowrap; /* Empêche le retour à la ligne */
 }
-
 
 .status.active {
   background-color: #e0e7ff;
   color: #6366f1;
 }
 
-
-.status.completed {
-  background-color: #d1fae5;
-  color: #10b981;
+/* Lignes alternées et effet au survol */
+tr:nth-child(even) {
+  background-color: #f8f9fa;
 }
 
-
-.status.scheduled {
-  background-color: #cffafe;
-  color: #06b6d4;
+tr:hover {
+  background-color: #e3f2fd;
 }
 
-
-.status.pending {
-  background-color: #fef3c7;
-  color: #f59e0b;
+/* Texte spécifique à la colonne titre */
+.project-name {
+  font-weight: bold;
+  color: #374151;
+  max-width: 200px; /* Limite la largeur */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-
-.actions {
-  cursor: pointer;
+/* Colonnes Actions : Icônes mieux disposées */
+.actions a {
+  color: #0d47a1;
+  margin-right: 10px;
+  font-size: 16px;
+  text-decoration: none;
 }
 
-
-.actions::before {
-  font-size: 20px;
-  color: #6b7280;
+.actions a:hover {
+  color: #1565c0;
 }
 
+/* Alignement pour la colonne "Fin" */
+td:nth-child(4) {
+  text-align: center;
+}
 
+/* Gestion responsive */
 @media (max-width: 600px) {
+  th, td {
+    font-size: 12px; /* Réduction sur mobile */
+    padding: 8px 6px;
+  }
   .table-title {
     font-size: 16px;
-    padding: 15px;
-  }
-  th, td {
-    padding: 10px;
-  }
-  .status {
-    font-size: 10px;
   }
 }

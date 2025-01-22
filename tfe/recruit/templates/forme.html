@@ -1,0 +1,79 @@
+{% extends "dashboard.html" %}
+{% load static %}
+{% block metas %}
+<title>Evaluation</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block contents %}
+<div class="content-wrapper flex justify-center py-12">
+  <main class="w-full max-w-4xl bg-white p-8 rounded-lg shadow-lg transition-all hover:shadow-2xl">
+    <!-- Titre principal -->
+    <h2 class="text-3xl font-semibold text-blue-800 mb-8 text-center">{{ can.appel }}</h2>
+
+    <!-- Formulaire avec disposition optimisée -->
+    <form action="" method="POST" class="space-y-6">
+      {% csrf_token %}
+
+      <!-- Disposition en grille -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        {% for field in form %}
+          <!-- Champ "Observation" avec largeur complète -->
+          {% if field.name == 'observation' %}
+            <div class="form-group col-span-2">
+              <label for="{{ field.id_for_label }}" class="block text-gray-700 font-medium mb-2">{{ field.label }}</label>
+              <textarea name="{{ field.name }}" id="{{ field.id_for_label }}" rows="4" class="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all">{{ field.value }}</textarea>
+              {% if field.errors %}
+                <div class="text-red-500 text-sm mt-2">
+                  {% for error in field.errors %}
+                    <p>{{ error }}</p>
+                  {% endfor %}
+                </div>
+              {% endif %}
+            </div>
+          {% else %}
+            <!-- Autres champs -->
+            <div class="form-group">
+              <label for="{{ field.id_for_label }}" class="block text-gray-700 font-medium mb-2">{{ field.label }}</label>
+              <div class="relative">
+                <select id="{{ field.id_for_label }}" name="{{ field.name }}" class="appearance-none w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white cursor-pointer">
+                  <option value="" disabled selected>Sélectionnez...</option>
+                  {% for option in field.field.choices %}
+                    <option value="{{ option.0 }}" {% if option.0 == field.value %}selected{% endif %}>{{ option.1 }}</option>
+                  {% endfor %}
+                </select>
+                {% if field.errors %}
+                  <div class="text-red-500 text-sm mt-2">
+                    {% for error in field.errors %}
+                      <p>{{ error }}</p>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+
+      <!-- Champ supplémentaire avec disposition spécifique -->
+      <div class="grid grid-cols-2 gap-6">
+        <!-- Ancienneté -->
+        <div class="form-group">
+          <label for="anciennete" class="block text-gray-700 font-medium mb-2">Ancienneté</label>
+          <input type="number" id="anciennete" name="anciennete" class="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all">
+        </div>
+        <!-- Adéquation UE/Spécialité -->
+        <div class="form-group">
+          <label for="adequation" class="block text-gray-700 font-medium mb-2">Adéquation UE/Spécialité</label>
+          <input type="checkbox" id="adequation" name="adequation" class="w-5 h-5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 transition-all">
+        </div>
+      </div>
+
+      <!-- Bouton de soumission -->
+      <div class="form-action flex justify-center mt-6">
+        <input type="submit" value="Envoyer" class="bg-blue-700 text-white px-6 py-3 rounded-lg hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full sm:w-auto transition-all ease-in-out duration-200">
+      </div>
+    </form>
+  </main>
+</div>
+{% endblock %}

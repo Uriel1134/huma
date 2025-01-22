@@ -7,15 +7,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'style.css' %}"> 
     <link href="style.css" rel="stylesheet">
-
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/e09ff8d5d8.js" crossorigin="anonymous"></script>
-    
     <style>
         /* Header */
-        
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            z-index: 9999;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+            height: 73px; /* Hauteur du header */
+        }
 
         header h1 {
             margin: 0;
@@ -30,13 +37,17 @@
 
         /* Navigation verticale */
         .vertical-nav {
+            position: fixed;
+            top: 73px; /* Commence juste après le header */
+            left: 0;
             width: 256px;
+            height: calc(100vh - 73px); /* Hauteur pleine, moins la hauteur du header */
+            overflow-y: auto;
             background-color: rgba(217, 217, 217, 0.49);
-            min-height: calc(100vh - 73px); /* Ajusté pour la hauteur du header */
+            z-index: 1000; /* S'assurer que la barre de navigation est au-dessus du contenu */
             padding-top: 20px;
-            position: relative;
         }
-
+        
         .vertical-nav img.logo {
             width: 100px;
             margin: 20px auto;
@@ -69,6 +80,9 @@
             width: 744px;
             flex-grow: 1;
             padding: 20px;
+            margin-left: 256px; 
+            padding: 20px;
+            padding-top: 93px; 
         }
 
         /* Layout global */
@@ -163,15 +177,19 @@
         <!-- Navigation verticale -->
         <div class="vertical-nav">
             <img src="{% static 'img/icons/logo.png' %}" alt="Logo" class="logo">
-            <a href="{% url 'recruit:dash' %}"  class="nav-item">
-                <img src="{% static 'img/icons/Accueil.svg' %}" alt="Dashboard"> Appels En cours
+
+            <a href="{% url 'recruit:stats' %}"  class="nav-item">
+                <img src="{% static 'img/icons/Vector (1).svg' %}" alt="Appels"> Candidature
             </a>
+            
             <a href="{% url 'recruit:profil' %}" class="nav-item">
                 <img src="{% static 'img/icons/Vector.svg' %}" alt="Profil"> Mon Profil
             </a>
-            <a href="{% url 'recruit:stats' %}"  class="nav-item">
-                <img src="{% static 'img/icons/Vector (1).svg' %}" alt="Appels"> Appels Postulés
+
+            <a href="{% url 'recruit:dash' %}"  class="nav-item">
+                <img src="{% static 'img/icons/Accueil.svg' %}" alt="Dashboard"> Appels En cours
             </a>
+
             <a href="{% url 'recruit:home' %}"  class="nav-item">
                 <img src="{% static 'img/icons/Vector (2).svg' %}" alt="Contacts"> Accueil
             </a> 
@@ -190,31 +208,52 @@
             </div>
 
             {% block contents %}
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {% for app in appels %}
-                <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-300 hover:shadow-xl transition-shadow duration-300">
-                  <h2 class="text-xl font-bold text-gray-800 mb-4">{{ app.titre }}</h2>
-                  <p class="text-gray-600">Date de fin : {{ app.date_fin }}</p>
-          
-                  <!-- Affichage du lien pour télécharger le document -->
-                  {% if app.document %}
-                    <div class="mt-4">
-                      <a href="{{ app.document.url }}" class="text-blue-500 hover:underline" target="_blank">Télécharger le document</a>
-                    </div>
-                  {% else %}
-                    <p class="text-red-500">Aucun document associé.</p>
-                  {% endif %}
-          
-                  <!-- Lien pour postuler -->
-                  <div class="mt-4">
-                    <a href="{% url 'recruit:candidater' app.id %}" class="text-green-500 hover:underline">Postuler</a>
-                  </div>
-                </div>
-              {% empty %}
-                <h2 class="text-xl font-bold text-gray-800 mb-4">Pas d'appels en cours</h2>
-              {% endfor %}
-            </div>
-          {% endblock %}
+
+                {% if role == "Enseignant" %}
+                        {% include 'stats/teacher.html' %}
+                    {% elif role == "Ecole" %}
+                        {% include 'stats/ecole.html' %}
+                    {% elif role == "Evaluateur" %}
+                        {% include 'stats/jury.html' %}
+
+                    {% else %}
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {% for app in appels %}
+                            <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-300 hover:shadow-xl transition-shadow duration-300">
+                            <h4 class="text-xl font-bold text-gray-800 mb-4" style="color: #0d47a1;">{{ app.titre }}</h4>
+                            <p class="text-gray-600">Date de fin : {{ app.date_fin }}</p>
+                    
+                            <!-- Affichage du lien pour télécharger le document -->
+                            {% if app.document %}
+                                <div class="mt-4">
+                                    <p class="mb-4">
+                                        <a href="{{ app.document.url }}" target="_blank" class="text-red-500 hover:underline">
+                                        <i class="fas fa-download mr-2"></i> Télécharger le document associé
+                                        </a>
+                                    </p>                      
+                                </div>
+                            {% else %}
+                                <p class="text-red-500">Aucun document associé.</p>
+                            {% endif %}
+                    
+                            <!-- Lien pour postuler -->
+                            <div class="mt-4">
+                                <a href="{% url 'recruit:candidater' appel_id=app.id %}" class="apply-btn inline-block px-6 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors duration-300">
+                                    Postuler
+                                </a>
+                            </div>
+                            </div>
+                        {% empty %}
+                            <h2 class="text-xl font-bold text-gray-800 mb-4">Pas d'appels en cours</h2>
+                        {% endfor %}
+                        </div>
+                
+                {% endif %}
+
+                {% endblock %}
+
+
           
         </main>
     </div>

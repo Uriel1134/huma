@@ -1,52 +1,74 @@
+{% extends "dashboard.html" %}
+{% load custom_filters %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
+{% block metas %}
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="{% static 'stats.css' %}">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <title>Document</title>
-</head>
+  <title>Tableau des Candidats</title>
+{% endblock %}
+
+{% block contents %}
 <body>
-  {% include "statics/header.html" %}
-
-  <div class="table-container">
-    <div class="table-title"> {{ can.appel }} </div>
-    <table class="min-w-fit bg-white">
-      <thead class="bg-[#6366f1]">
-        <tr>
-          <th> Candidats </th>
-          <th> Demande  </th>
-          <th> Diplome </th> 
-          <th> CV </th> 
-          <th> IFU </th> 
-          <th> RIB </th> 
-          <th> Décision </th> 
-        </tr>
-      </thead>
-      
-      <tbody>
-        {% for can in cand %}
+  <div class="table-container p-6">
+    <div class="table-title text-2xl font-semibold mb-4 text-gray-800">{{ can.appel }}</div>
+    <div class="overflow-x-auto shadow-lg rounded-lg">
+      <table class="min-w-full bg-white rounded-lg border border-gray-200">
+        <thead class="bg-blue-600 text-white">
           <tr>
-            <td class="project-name"> {{ can.enseignant }} </td>
-            <td> <a target='blank' href="{{ can.demande.url }}"> Voir </a> </td>
-            <td> <a target='blank' href="{{ can.diplome.url }}"> Voir </a> </td>
-            <td> <a target='blank' href="{{ can.cv.url }}"> Voir </a> </td>
-            <td> <a target='blank' href="{{ can.ifu.url }}"> Voir </a> </td>
-            <td> <a target='blank' href="{{ can.rib.url }}"> Voir </a> </td>         
-            <td> {{ decisions|slice:forloop.counter|first }} </td>
+            <th class="px-6 py-3 text-left text-sm font-medium uppercase tracking-wider">Candidats</th>
+            <th class="px-6 py-3 text-left text-sm font-medium uppercase tracking-wider">Demande</th>
+            <th class="px-6 py-3 text-left text-sm font-medium uppercase tracking-wider">Diplôme</th>
+            <th class="px-6 py-3 text-left text-sm font-medium uppercase tracking-wider">CV</th>
+            <th class="px-6 py-3 text-left text-sm font-medium uppercase tracking-wider">IFU</th>
+            <th class="px-6 py-3 text-left text-sm font-medium uppercase tracking-wider">RIB</th>
+            <th class="px-6 py-3 text-left text-sm font-medium uppercase tracking-wider">Décision</th>
           </tr>
-        {% empty %}
-        Pas d'appel en cours
-        {% endfor %}
-
-      </tbody>
-    </table>
+        </thead>
+        <tbody class="divide-y divide-gray-200">
+          {% for can in cand %}
+          <tr class="hover:bg-gray-100">
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 font-medium">{{ can.enseignant }}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600">
+              <a target="_blank" href="{{ can.demande.url }}" class="hover:underline">
+                <i class="fa-solid fa-eye"></i> Voir
+              </a>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600">
+              <a target="_blank" href="{{ can.diplome.url }}" class="hover:underline">
+                <i class="fa-solid fa-eye"></i> Voir
+              </a>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600">
+              <a target="_blank" href="{{ can.cv.url }}" class="hover:underline">
+                <i class="fa-solid fa-eye"></i> Voir
+              </a>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600">
+              <a target="_blank" href="{{ can.ifu.url }}" class="hover:underline">
+                <i class="fa-solid fa-eye"></i> Voir
+              </a>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600">
+              <a target="_blank" href="{{ can.rib.url }}" class="hover:underline">
+                <i class="fa-solid fa-eye"></i> Voir
+              </a>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+              {% if decisions|dictsort:1 %}
+                {{ decisions|get_item:can.appel.id|first }}
+                {% else %}
+                  Non évalué
+              {% endif %}
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="7" class="text-center text-gray-500 py-6">Pas d'appel en cours</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
   </div>
-
-  
-  {% include "statics/footer.html" %}
-
 </body>
-</html>
+{% endblock %}
